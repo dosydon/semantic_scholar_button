@@ -1,4 +1,5 @@
 'use strict';
+// import $ from 'jquery'
 import isAbsoluteUrl from 'is-absolute-url'
 import URL from 'url-parse'
 import {Result} from './result.js'
@@ -9,6 +10,53 @@ function makeUrl(input) {
   return url;
 }
 
+function removeAttributes(targetDOM,attribues) {
+
+	const tw = document.createTreeWalker(targetDOM,
+	NodeFilter.SHOW_ELEMENT,
+	(node) => {
+    return NodeFilter.FILTER_ACCEPT;
+	},
+	false);
+
+	let node = tw.currentNode;
+  do{
+    for (let attr of attribues) {
+      node.removeAttribute(attr);
+    }
+  } while(node = tw.nextNode());
+}
+
+// function removeNodes(targetDOM,funcs) {
+//
+// 	const tw = document.createTreeWalker(targetDOM,
+// 	NodeFilter.SHOW_ELEMENT,
+// 	(node) => {
+//     for (let func of funcs) {
+//       if (func(node)) {
+//         console.log('remove');
+//         return NodeFilter.FILTER_ACCEPT;
+//       }
+//       return NodeFilter.FILTER_SKIP;
+//     }
+// 	},
+// 	false);
+//
+// 	let node = tw.currentNode;
+//   do{
+//     console.log(node);
+//     node.remove();
+//   } while(node = tw.nextNode());
+// }
+
+function removeNodes(targetDOM,selector) {
+
+  const unecessary = targetDOM.querySelectorAll(selector);
+  for (let elem of unecessary) {
+    elem.remove();
+  }
+}
+
 function sendXMLHttpRequest(input) {
   var xhttp = new XMLHttpRequest();
   var xhr = new XMLHttpRequest();
@@ -16,25 +64,28 @@ function sendXMLHttpRequest(input) {
 
   xhr.onreadystatechange = function() {
       if (xhr.readyState == XMLHttpRequest.DONE) {
-          const htmlString = xhr.responseText;
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(htmlString, 'text/html');
-          console.log(Result);
-          for (let res of getResults(doc))
-            console.log(Result.fromDOM(res));
-//           document.getElementById('demo').innerHTML = res.innerHTML;
-//           addLinkListener();
+          const doc = xhr.response;
+          const demo = document.getElementById('demo');
+          for (let resDOM of getResults(doc)) {
+            removeNodes(resDOM,'.search-result__stats , .featured-mention');
+            removeAttributes(resDOM,['data-reactid']);
+            demo.appendChild(resDOM);
+            console.log(resDOM);
+          }
+          addLinkListener();
       }
   }
   xhr.open('GET', url, true);
+  xhr.responseType = "document";
   xhr.send(null);
 }
 
 function getResults(doc){
   const arr = [];
   const results = doc.getElementsByClassName('search-result');
-  for (let res of results)
+  for (let res of results){
     arr.push(res);
+  }
   return arr;
 }
 
@@ -49,7 +100,6 @@ function addLinkListener(){
             }else{
               var location = url.protocol + url.hostname + url.pathname;
             }
-            console.log(location);
             ln.onclick = function () {
                 chrome.tabs.create({active: true, url: location});
             };
