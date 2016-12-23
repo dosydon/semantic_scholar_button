@@ -2,25 +2,25 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Popup</title>
   <link rel="stylesheet" type="text/css" href="../styles/popup.css">
 </head>
 <body>
-  <form class="search-bar" autocomplete="off" action="/search" data-reactid=".1yono7n9jwg.0.0.0.1">
-    <div class="flex-row" data-reactid=".1yono7n9jwg.0.0.0.1.0">
-      <input type="search" name="q" class="input form-input" placeholder="Search" value="plannig" data-reactid=".1yono7n9jwg.0.0.0.1.0.0">
-      <button type="submit" class="button" data-reactid=".1yono7n9jwg.0.0.0.1.0.1">
-        <svg width="16" height="16" data-selenium-selector="icon-search" data-reactid=".1yono7n9jwg.0.0.0.1.0.1.0">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#search" data-reactid=".1yono7n9jwg.0.0.0.1.0.1.0.0">
+  <form class="search-bar" autocomplete="off" action="/search">
+    <div class="flex-row">
+      <input type="search" name="q" class="input form-input" placeholder="Search">
+      <button type="submit" class="button">
+        <svg width="16" height="16">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#search">
           </use>
         </svg>
       </button>
     </div>
   </form>
 
-
-  <div id="demo"></div>
-  <a href="http://www.w3schools.com">Visit W3Schools</a>
+  <div id="semantic-scholar">
+    <div id="symbols"></div>
+    <div id="results"></div>
+  </div>
 
   <script src="../scripts/popup.js"></script>
 </body>
