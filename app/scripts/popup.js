@@ -1,7 +1,7 @@
 'use strict';
 import Spinner from 'spin';
 import { processRoot } from './result.js';
-import { makeQueryUrl, isExtensionUrl } from './url.js';
+import { makeQueryUrl } from './url.js';
 
 function processQuery(input) {
   document.getElementById('search-input').value = input;
@@ -19,29 +19,12 @@ function sendXMLHttpRequest(input) {
       if (xhr.readyState == XMLHttpRequest.DONE) {
           const doc = xhr.response;
           processRoot(doc);
-          addLinkListener();
           spinner.stop();
       }
   }
   xhr.open('GET', url, true);
   xhr.responseType = "document";
   xhr.send(null);
-}
-
-function addLinkListener(){
-  const links = document.getElementsByTagName('a');
-  for (let i = 0; i < links.length; i++) {
-    const ln = links[i];
-    if (isExtensionUrl(ln.href)) {
-      const location = 'https://www.semanticscholar.org' + url.pathname;
-    }else{
-      const location = url.protocol + url.hostname + url.pathname;
-    }
-
-    ln.onclick = function () {
-        chrome.tabs.create({active: true, url: location});
-    };
-  }
 }
 
 chrome.tabs.executeScript( {

@@ -1,3 +1,5 @@
+import { replaceExtensionUrl } from './url.js';
+
 function removeAttributes(targetDOM,attribues) {
 
 	const tw = document.createTreeWalker(targetDOM,
@@ -56,5 +58,17 @@ export function processRoot(rootDOM) {
     removeNodes(resDOM,'.search-result__stats , .featured-mention , .search-result-badges , .more , .paper-actions-toggle');
     removeAttributes(resDOM,['data-reactid','target']);
     semanticDiv.shadowRoot.appendChild(resDOM);
+  }
+
+  addLinkListener(semanticDiv.shadowRoot);
+}
+
+function addLinkListener(dom){
+  const links = dom.querySelectorAll('a');
+  for (let ln of links) {
+
+    ln.onclick = function () {
+        chrome.tabs.create({active: true, url: replaceExtensionUrl(ln.href)});
+    };
   }
 }
