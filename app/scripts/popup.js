@@ -54,24 +54,24 @@ function sendXMLHttpRequest(input) {
   xhr.onreadystatechange = function() {
       if (xhr.readyState == XMLHttpRequest.DONE) {
           const semanticDiv = document.getElementById('semantic-scholar');
-          const resultsDiv = document.getElementById('results');
-          const symbolsDiv = document.getElementById('symbols');
-          removeAllChildren(resultsDiv);
-          removeAllChildren(symbolsDiv);
+          if (!semanticDiv.shadowRoot) {
+            semanticDiv.attachShadow({mode:'open'});
+          }
+          removeAllChildren(semanticDiv.shadowRoot);
 
           const doc = xhr.response;
 					const style = doc.querySelector('link[rel="stylesheet"]');
-          resultsDiv.appendChild(style);
+          semanticDiv.shadowRoot.appendChild(style);
 
 					const symbolDOMs = doc.querySelectorAll('symbol');
           for (let symbolDOM of symbolDOMs) {
-            symbolsDiv.appendChild(symbolDOM);
+            semanticDiv.shadowRoot.appendChild(symbolDOM);
           }
 
           for (let resDOM of getResults(doc)) {
             removeNodes(resDOM,'.search-result__stats , .featured-mention , .search-result-badges , .more , .paper-actions-toggle');
             removeAttributes(resDOM,['data-reactid','target']);
-            resultsDiv.appendChild(resDOM);
+            semanticDiv.shadowRoot.appendChild(resDOM);
             console.log(resDOM);
           }
           addLinkListener();
