@@ -1,14 +1,7 @@
 'use strict';
 import isAbsoluteUrl from 'is-absolute-url'
 import URL from 'url-parse'
-
-const submitForm = document.querySelector('form');
-submitForm.addEventListener('submit',
-  event => {
-    event.preventDefault();
-    processQuery(document.getElementById('search-input').value);
-  }
-);
+import Spinner from 'spin'
 
 function makeUrl(input) {
   const url = `https://www.semanticscholar.org/search?&q=${input}`;
@@ -50,6 +43,9 @@ function sendXMLHttpRequest(input) {
   var xhr = new XMLHttpRequest();
   const url = makeUrl(input);
 
+  var target = document.getElementById('spinner')
+  var spinner = new Spinner().spin(target);
+
   xhr.onreadystatechange = function() {
       if (xhr.readyState == XMLHttpRequest.DONE) {
           const semanticDiv = document.getElementById('semantic-scholar');
@@ -72,6 +68,7 @@ function sendXMLHttpRequest(input) {
             console.log(resDOM);
           }
           addLinkListener();
+          spinner.stop();
       }
   }
   xhr.open('GET', url, true);
@@ -111,3 +108,12 @@ chrome.tabs.executeScript( {
 }, function(selection) {
       processQuery(selection[0]);
 });
+
+const submitForm = document.querySelector('form');
+submitForm.addEventListener('submit',
+  event => {
+    event.preventDefault();
+    processQuery(document.getElementById('search-input').value);
+  }
+);
+
