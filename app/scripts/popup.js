@@ -1,41 +1,12 @@
 'use strict';
-import isAbsoluteUrl from 'is-absolute-url'
-import URL from 'url-parse'
-import Spinner from 'spin'
+import isAbsoluteUrl from 'is-absolute-url';
+import URL from 'url-parse';
+import Spinner from 'spin';
+import { processRoot } from './result.js';
 
 function makeUrl(input) {
   const url = `https://www.semanticscholar.org/search?&q=${input}`;
   return url;
-}
-
-function removeAttributes(targetDOM,attribues) {
-
-	const tw = document.createTreeWalker(targetDOM,
-	NodeFilter.SHOW_ELEMENT,
-	(node) => {
-    return NodeFilter.FILTER_ACCEPT;
-	},
-	false);
-
-	let node = tw.currentNode;
-  do{
-    for (let attr of attribues) {
-      node.removeAttribute(attr);
-    }
-  } while(node = tw.nextNode());
-}
-
-function removeNodes(targetDOM,selector) {
-
-  const unecessary = targetDOM.querySelectorAll(selector);
-  for (let elem of unecessary) {
-    elem.remove();
-  }
-}
-
-function removeAllChildren(elm) {
-  while (elm.hasChildNodes())
-      elm.removeChild(elm.lastChild);
 }
 
 function processQuery(input) {
@@ -48,32 +19,13 @@ function sendXMLHttpRequest(input) {
   var xhr = new XMLHttpRequest();
   const url = makeUrl(input);
 
-  var target = document.getElementById('spinner')
-  var spinner = new Spinner().spin(target);
+  const target = document.getElementById('spinner')
+  const spinner = new Spinner().spin(target);
 
   xhr.onreadystatechange = function() {
       if (xhr.readyState == XMLHttpRequest.DONE) {
-          const semanticDiv = document.getElementById('semantic-scholar');
-          if (!semanticDiv.shadowRoot) {
-            semanticDiv.attachShadow({mode:'open'});
-          }
-          removeAllChildren(semanticDiv.shadowRoot);
-
           const doc = xhr.response;
-					const style = doc.querySelector('link[rel="stylesheet"]');
-          semanticDiv.shadowRoot.appendChild(style);
-
-					const symbolDOMs = doc.querySelectorAll('symbol');
-          for (let symbolDOM of symbolDOMs) {
-            semanticDiv.shadowRoot.appendChild(symbolDOM);
-          }
-
-          for (let resDOM of getResults(doc)) {
-            removeNodes(resDOM,'.search-result__stats , .featured-mention , .search-result-badges , .more , .paper-actions-toggle');
-            removeAttributes(resDOM,['data-reactid','target']);
-            semanticDiv.shadowRoot.appendChild(resDOM);
-            console.log(resDOM);
-          }
+          processRoot(doc);
           addLinkListener();
           spinner.stop();
       }
@@ -83,14 +35,6 @@ function sendXMLHttpRequest(input) {
   xhr.send(null);
 }
 
-function getResults(doc){
-  const arr = [];
-  const results = doc.getElementsByClassName('search-result');
-  for (let res of results){
-    arr.push(res);
-  }
-  return arr;
-}
 
 function addLinkListener(){
     var links = document.getElementsByTagName('a');

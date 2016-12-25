@@ -9,11 +9,6 @@
     "16": "images/icon-16.png",
     "128": "images/icon-128.png"
   },
-  "background": {
-    "scripts": [
-      "scripts/background.js"
-    ]
-  },
   "permissions": ["tabs","activeTab","*://www.semanticscholar.org/*"],
   "browser_action": {
     "default_icon": {
