@@ -52,7 +52,6 @@
     "yargs": "5.x.x"
   },
   "dependencies": {
-    "is-absolute-url": "^2.1.0",
     "spin": "0.0.1",
     "url-parse": "^1.1.7"
   }

@@ -47,7 +47,9 @@ function addLinkListener(){
 chrome.tabs.executeScript( {
       code: "window.getSelection().toString();"
 }, function(selection) {
-      processQuery(selection[0]);
+      if (selection) {
+        processQuery(selection[0]);
+      }
 });
 
 const submitForm = document.querySelector('form');
