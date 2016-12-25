@@ -1,6 +1,15 @@
 'use strict';
 import isAbsoluteUrl from 'is-absolute-url'
 import URL from 'url-parse'
+
+const submitForm = document.querySelector('form');
+submitForm.addEventListener('submit',
+  event => {
+    event.preventDefault();
+    processQuery(document.getElementById('search-input').value);
+  }
+);
+
 function makeUrl(input) {
   const url = `https://www.semanticscholar.org/search?&q=${input}`;
   return url;
@@ -31,6 +40,11 @@ function removeNodes(targetDOM,selector) {
   }
 }
 
+function processQuery(input) {
+  document.getElementById('search-input').value = input;
+  sendXMLHttpRequest(input);
+}
+
 function sendXMLHttpRequest(input) {
   var xhttp = new XMLHttpRequest();
   var xhr = new XMLHttpRequest();
@@ -38,13 +52,14 @@ function sendXMLHttpRequest(input) {
 
   xhr.onreadystatechange = function() {
       if (xhr.readyState == XMLHttpRequest.DONE) {
+          const semanticDiv = document.getElementById('semantic-scholar');
+          const resultsDiv = document.getElementById('results');
+          const symbolsDiv = document.getElementById('symbols');
+
           const doc = xhr.response;
 					const style = doc.querySelector('link[rel="stylesheet"]');
-					console.log(style);
-          document.body.appendChild(style);
+          semanticDiv.appendChild(style);
 
-          const results = document.getElementById('results');
-          const symbolsDiv = document.getElementById('symbols');
 					const symbolDOMs = doc.querySelectorAll('symbol');
           for (let symbolDOM of symbolDOMs) {
             symbolsDiv.appendChild(symbolDOM);
@@ -53,7 +68,7 @@ function sendXMLHttpRequest(input) {
           for (let resDOM of getResults(doc)) {
             removeNodes(resDOM,'.search-result__stats , .featured-mention , .search-result-badges , .more , .paper-actions-toggle');
             removeAttributes(resDOM,['data-reactid','target']);
-            results.appendChild(resDOM);
+            resultsDiv.appendChild(resDOM);
             console.log(resDOM);
           }
           addLinkListener();
@@ -94,5 +109,5 @@ function addLinkListener(){
 chrome.tabs.executeScript( {
       code: "window.getSelection().toString();"
 }, function(selection) {
-      sendXMLHttpRequest(selection[0]);
+      processQuery(selection[0]);
 });
