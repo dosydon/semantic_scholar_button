@@ -1,13 +1,7 @@
 'use strict';
-import isAbsoluteUrl from 'is-absolute-url';
-import URL from 'url-parse';
 import Spinner from 'spin';
 import { processRoot } from './result.js';
-
-function makeUrl(input) {
-  const url = `https://www.semanticscholar.org/search?&q=${input}`;
-  return url;
-}
+import { makeQueryUrl, isExtensionUrl } from './url.js';
 
 function processQuery(input) {
   document.getElementById('search-input').value = input;
@@ -15,9 +9,8 @@ function processQuery(input) {
 }
 
 function sendXMLHttpRequest(input) {
-  var xhttp = new XMLHttpRequest();
-  var xhr = new XMLHttpRequest();
-  const url = makeUrl(input);
+  const xhr = new XMLHttpRequest();
+  const url = makeQueryUrl(input);
 
   const target = document.getElementById('spinner')
   const spinner = new Spinner().spin(target);
@@ -35,23 +28,20 @@ function sendXMLHttpRequest(input) {
   xhr.send(null);
 }
 
-
 function addLinkListener(){
-    var links = document.getElementsByTagName('a');
-    for (var i = 0; i < links.length; i++) {
-        (function () {
-            const ln = links[i];
-            const url = new URL(ln.href);
-            if (url.protocol == 'chrome-extension:'){
-              var location = 'https://www.semanticscholar.org' + url.pathname;
-            }else{
-              var location = url.protocol + url.hostname + url.pathname;
-            }
-            ln.onclick = function () {
-                chrome.tabs.create({active: true, url: location});
-            };
-        })();
+  const links = document.getElementsByTagName('a');
+  for (let i = 0; i < links.length; i++) {
+    const ln = links[i];
+    if (isExtensionUrl(ln.href)) {
+      const location = 'https://www.semanticscholar.org' + url.pathname;
+    }else{
+      const location = url.protocol + url.hostname + url.pathname;
     }
+
+    ln.onclick = function () {
+        chrome.tabs.create({active: true, url: location});
+    };
+  }
 }
 
 chrome.tabs.executeScript( {
