@@ -33,6 +33,11 @@ function removeNodes(targetDOM,selector) {
   }
 }
 
+function removeAllChildren(elm) {
+  while (elm.hasChildNodes())
+      elm.removeChild(elm.lastChild);
+}
+
 function processQuery(input) {
   document.getElementById('search-input').value = input;
   sendXMLHttpRequest(input);
@@ -51,10 +56,12 @@ function sendXMLHttpRequest(input) {
           const semanticDiv = document.getElementById('semantic-scholar');
           const resultsDiv = document.getElementById('results');
           const symbolsDiv = document.getElementById('symbols');
+          removeAllChildren(resultsDiv);
+          removeAllChildren(symbolsDiv);
 
           const doc = xhr.response;
 					const style = doc.querySelector('link[rel="stylesheet"]');
-          semanticDiv.appendChild(style);
+          resultsDiv.appendChild(style);
 
 					const symbolDOMs = doc.querySelectorAll('symbol');
           for (let symbolDOM of symbolDOMs) {
