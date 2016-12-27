@@ -30,15 +30,6 @@ function removeAllChildren(elm) {
 	}
 }
 
-function getResults(rootDOM){
-  const arr = [];
-  const results = rootDOM.getElementsByClassName('search-result');
-  for (const res of results){
-    arr.push(res);
-  }
-  return arr;
-}
-
 export function processRoot(rootDOM) {
   const semanticDiv = document.getElementById('semantic-scholar');
   if (!semanticDiv.shadowRoot) {
@@ -54,7 +45,7 @@ export function processRoot(rootDOM) {
     semanticDiv.shadowRoot.appendChild(symbolDOM);
   }
 
-  for (const resDOM of getResults(rootDOM)) {
+  for (const resDOM of rootDOM.getElementsByClassName('search-result')) {
     removeNodes(resDOM, '.search-result__stats , .featured-mention , .search-result-badges , .more , .paper-actions-toggle');
     removeAttributes(resDOM, ['data-reactid', 'target']);
     semanticDiv.shadowRoot.appendChild(resDOM);
