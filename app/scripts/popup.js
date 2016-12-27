@@ -30,9 +30,15 @@ function sendXMLHttpRequest(input) {
 chrome.tabs.executeScript( {
       code: "window.getSelection().toString();"
 }, function(selection) {
-      if (selection) {
+    if (chrome.extension.lastError){
+      if (chrome.extension.lastError.message == "Cannot access a chrome:// URL"){
+        console.error(chrome.runtime.lastError.message);
+      }
+    } else {
+      if (selection[0]) {
         processQuery(selection[0]);
       }
+    }
 });
 
 const submitForm = document.querySelector('form');
