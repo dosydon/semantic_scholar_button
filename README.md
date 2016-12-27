@@ -1,7 +1,8 @@
 #Semantic Scholar Button (Unofficial)
-Semantic Scholar Button is a simple google chrome extension that lets you look up
-scholary articles on [Semantic Scholar](https://www.semanticscholar.org/) within a small popup window.
 Note: This is an unofficial extension, and is not related to semanticscholar.org.
+
+Semantic Scholar Button is a simple google chrome extension that lets you look up
+scholary articles on [Semantic Scholar](https://www.semanticscholar.org/) from a small popup window.
 
 ## Installation
 
