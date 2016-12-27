@@ -25,13 +25,28 @@ line-height: normal;
 #submit-button {
 position: absolute;
 top: 16px;
-right: 16px;
+right: 50px;
 text-align: center;
 box-sizing: border-box;
 width: 36px;
 height: 29px;
 background-image: url("../images/search.png");
 background-color: #4d90fe;
+background-size: 16px 16px;
+background-repeat: no-repeat;
+background-position: center;
+}
+
+#diff-tab-button {
+position: absolute;
+top: 16px;
+right: 16px;
+text-align: center;
+box-sizing: border-box;
+width: 36px;
+height: 29px;
+background-color: #FCB431;
+background-image: url("../images/add.png");
 background-size: 16px 16px;
 background-repeat: no-repeat;
 background-position: center;
