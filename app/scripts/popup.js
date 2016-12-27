@@ -12,16 +12,16 @@ function sendXMLHttpRequest(input) {
   const xhr = new XMLHttpRequest();
   const url = makeQueryUrl(input);
 
-  const target = document.getElementById('spinner')
+  const target = document.getElementById('spinner');
   const spinner = new Spinner().spin(target);
 
-  xhr.onreadystatechange = function() {
+  xhr.onreadystatechange = () => {
       if (xhr.readyState == XMLHttpRequest.DONE) {
           const doc = xhr.response;
           processRoot(doc);
           spinner.stop();
       }
-  }
+  };
   xhr.open('GET', url, true);
   xhr.responseType = "document";
   xhr.send(null);
