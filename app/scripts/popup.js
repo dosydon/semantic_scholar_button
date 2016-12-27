@@ -48,7 +48,9 @@ document.querySelector('form').addEventListener('submit',
   }
 );
 
-document.getElementById("diff-tab-button").addEventListener("click", () => {
-		const inputField = document.getElementById('search-input');
-		chrome.tabs.create({active: true, url: makeQueryUrl(inputField.value)});
+document.getElementById("diff-tab-button").addEventListener("click", 
+  () => {
+    const inputField = document.getElementById('search-input');
+    chrome.tabs.create({active: true, url: makeQueryUrl(inputField.value)
+  });
 });

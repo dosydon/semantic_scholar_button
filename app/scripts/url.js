@@ -10,7 +10,7 @@ export function replaceExtensionUrl(url){
   if (parsed.protocol == 'chrome-extension:') {
     return 'https://www.semanticscholar.org' + parsed.pathname;
   }else{
-    return parsed.protocol + parsed.hostname + parsed.pathname;
+    return url;
   }
 }
 

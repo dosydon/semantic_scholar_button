@@ -1,7 +1,12 @@
 import { replaceExtensionUrl } from './url.js';
 
-function removeAttributes(targetDOM, attribues) {
+function removeAllChildren(elm) {
+  while (elm.hasChildNodes()) {
+      elm.removeChild(elm.lastChild);
+	}
+}
 
+function removeAttributes(targetDOM, attribues) {
 	const tw = document.createTreeWalker(targetDOM,
 	NodeFilter.SHOW_ELEMENT,
 	() => {
@@ -10,6 +15,10 @@ function removeAttributes(targetDOM, attribues) {
 	false);
 
 	let node = tw.currentNode;
+	if (!node) {
+		retrun;
+	}
+
   do{
     for (const attr of attribues) {
       node.removeAttribute(attr);
@@ -17,17 +26,10 @@ function removeAttributes(targetDOM, attribues) {
   } while(node = tw.nextNode());
 }
 
-function removeNodes(targetDOM, selector) {
-  const unecessary = targetDOM.querySelectorAll(selector);
-  for (const elem of unecessary) {
+function removeSelectedNodes(targetDOM, selector) {
+  for (const elem of targetDOM.querySelectorAll(selector)) {
     elem.remove();
   }
-}
-
-function removeAllChildren(elm) {
-  while (elm.hasChildNodes()) {
-      elm.removeChild(elm.lastChild);
-	}
 }
 
 export function processRoot(rootDOM) {
@@ -35,18 +37,16 @@ export function processRoot(rootDOM) {
   if (!semanticDiv.shadowRoot) {
     semanticDiv.attachShadow({mode: 'open'});
   }
+
   removeAllChildren(semanticDiv.shadowRoot);
 
-  const style = rootDOM.querySelector('link[rel="stylesheet"]');
-  semanticDiv.shadowRoot.appendChild(style);
-
-  const symbolDOMs = rootDOM.querySelectorAll('symbol');
-  for (const symbolDOM of symbolDOMs) {
+  semanticDiv.shadowRoot.appendChild(rootDOM.querySelector('link[rel="stylesheet"]'));
+  for (const symbolDOM of rootDOM.querySelectorAll('symbol')) {
     semanticDiv.shadowRoot.appendChild(symbolDOM);
   }
 
   for (const resDOM of rootDOM.getElementsByClassName('search-result')) {
-    removeNodes(resDOM, '.search-result__stats , .featured-mention , .search-result-badges , .more , .paper-actions-toggle');
+    removeSelectedNodes(resDOM, '.search-result__stats , .featured-mention , .search-result-badges , .more , .paper-actions-toggle');
     removeAttributes(resDOM, ['data-reactid', 'target']);
     semanticDiv.shadowRoot.appendChild(resDOM);
   }
@@ -57,7 +57,6 @@ export function processRoot(rootDOM) {
 function addLinkListener(dom) {
   const links = dom.querySelectorAll('a');
   for (const ln of links) {
-
     ln.onclick = function () {
         chrome.tabs.create({active: true, url: replaceExtensionUrl(ln.href)});
     };
