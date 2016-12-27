@@ -41,8 +41,7 @@ chrome.tabs.executeScript( {
     }
 });
 
-const submitForm = document.querySelector('form');
-submitForm.addEventListener('submit',
+document.querySelector('form').addEventListener('submit',
   event => {
     event.preventDefault();
     processQuery(document.getElementById('search-input').value);
