@@ -1,6 +1,6 @@
 {
-  "name": "__MSG_appName__",
-  "short_name": "__MSG_appShortName__",
+  "name": "Semantic Scholar Button",
+  "short_name": "semantic scholar button",
   "description": "__MSG_appDescription__",
   "version": "0.0.1",
   "manifest_version": 2,
