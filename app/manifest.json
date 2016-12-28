@@ -2,7 +2,7 @@
   "name": "Semantic Scholar Button",
   "short_name": "semantic scholar button",
   "description": "__MSG_appDescription__",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "manifest_version": 2,
   "default_locale": "en",
   "icons": {

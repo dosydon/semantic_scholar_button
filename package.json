@@ -1,7 +1,7 @@
 {
   "name": "semantic_scholar_button",
   "private": true,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "semantic_scholar_button",
   "scripts": {
     "start": "npm run dev:chrome",
