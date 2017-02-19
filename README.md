@@ -4,6 +4,10 @@ Note: This is an unofficial extension, and is not related to semanticscholar.org
 Semantic Scholar Button is a simple google chrome extension that lets you look up
 scholary articles on [Semantic Scholar](https://www.semanticscholar.org/) from a small popup window.
 
+#Credits
+Icons made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) is licensed by [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/).
+
+#Development
 ## Installation
 
 	$ npm install
